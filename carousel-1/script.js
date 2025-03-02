@@ -26,6 +26,20 @@ const updateDots = (currentDot,targetDot) =>{
     currentDot.classList.remove('current-slide');
     targetDot.classList.add('current-slide');
 }
+
+const hideShowArrows = (slides,prevButton,nextButton,targetIndex)=>{
+    if(targetIndex===0){
+        prevButton.classList.add("is-hidden");
+        nextButton.classList.remove("is-hidden");
+    }else if(targetIndex===slides.length-1){
+        prevButton.classList.remove("is-hidden");
+        nextButton.classList.add("is-hidden");
+    }else{
+        prevButton.classList.remove("is-hidden");
+        nextButton.classList.remove("is-hidden");
+    }
+}
+
 // When I click left, move slides to the left
 prevButton.addEventListener('click',e=>{
     const currentSlide = track.querySelector('.current-slide')
@@ -35,6 +49,9 @@ prevButton.addEventListener('click',e=>{
     const currentDot =  dotsNav.querySelector('.current-slide');
     const prevDot = currentDot.previousElementSibling;
     updateDots(currentDot,prevDot);
+
+    const prevIndex = slides.findIndex(slide=>slide===prevSlide)
+    hideShowArrows(slides,prevButton,nextButton,prevIndex);
 })
 // When I click right, move slides to the right
 nextButton.addEventListener('click',e=>{
@@ -45,6 +62,9 @@ nextButton.addEventListener('click',e=>{
     const currentDot =  dotsNav.querySelector('.current-slide');
     const nextDot = currentDot.nextElementSibling;
     updateDots(currentDot,nextDot);
+
+    const nextIndex = slides.findIndex(slide=>slide===nextSlide)
+    hideShowArrows(slides,prevButton,nextButton,nextIndex);
 })
 // When I click the nav indicators, move to that slide
 dotsNav.addEventListener('click',e=>{
@@ -57,4 +77,6 @@ dotsNav.addEventListener('click',e=>{
 
     const currentDot =  dotsNav.querySelector('.current-slide');
     updateDots(currentDot,targetDot);
+
+    hideShowArrows(slides,prevButton,nextButton,targetIndex);
 })
